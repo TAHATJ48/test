@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project{% endblock %}
+
+{% block body %}
+ <div class="text-center">
+                <p>Project Name: {{ project.name }}</p>
+                <p>Project Description:{{ project.description }}</p>
+                <p>Start Date:{{ project.start ? project.start|date('Y-m-d') : '' }}}</p>
+                <p>End Date:{{ project.end ? project.end|date('Y-m-d') : '' }}</p>
+    <a class="text-success" href="{{ path('app_project_edit', {'id': project.id}) }}"> <i class="fa-regular fa-pen-to-square"></i></a>
+    {{ include('project/_delete_form.html.twig') }}
+
+    </div>
+
+
+
+
+    <div class="example-wrapper">
+
+    <h3>Add a task</h3>
+{{ form_start(taskForm, {'action': path('app_project_show', {'id': project.id}), 'method': 'POST'}) }}
+
+        <div class="row">
+
+        <div class="col">
+            {{ form_row(taskForm.name) }}
+        </div>
+        <div class="col">
+            {{ form_row(taskForm.description) }}
+        </div>
+        <div class="col">
+            {{ form_row(taskForm.endDate) }}
+        </div>
+        <div class="col">
+            {{ form_row(taskForm.priority) }}
+        </div>
+        <div class="col">
+            {{ form_row(taskForm.status) }}
+        </div>
+        <div class="col">
+            {{ form_row(taskForm.assignee) }}
+        </div>
+            {{ form_row(taskForm.ajouter, { 'attr': {'class': 'btn btn-primary'} }) }}
+            {{ form_end(taskForm) }}
+      </div>
+      </div>
+
+
+           <h1>Tasks</h1>
+
+       {% for task in project.tasks %}
+      <div className='bg-blue-200 p-1 flex'>
+          <p className='border border-blue-400'>Task Name:{{ task.name }}</p>
+          <p className='border border-blue-400'>Task Description:{{ task.description }}</p>
+          <p className='border border-blue-400'>Task End Date:{{ task.endDate|date("d/m/Y") }}</p>
+          <p className='border border-blue-400'>Task Status:{{ task.status }}</p>
+          <p className='border border-blue-400'>Task priority:{{ task.priority }}</p>
+          <p className='border border-blue-400'>Task Assignee:{{ task.assignee.email }}</p>
+        <p><a class="text-success" href="{{ path('app_task_edit', {'id': task.id}) }}"> <i class="fa-regular fa-pen-to-square"></i></a></p>
+
+      </div>
+      <br/>
+      {% endfor %}
+         <h1>Teammates</h1>
+              
+    {% for teammate in project.teammates %}
+              <td>{{ teammate.email }}</td>      <br/>
+
+      {% endfor %}  
+
+
+{% endblock %}
